@@ -113,6 +113,8 @@ def handle_field_modification(corpo_sped, assinatura):
 
     print(f"[DEBUG] Filtragem concluída. {len(linhas_filtradas_indices)} linhas encontradas.") # Log
     st.markdown(f"#### {len(linhas_filtradas_indices)} Registros Encontrados para '{registro_escolhido}' (após filtros)")
+    aplicar_em_todos = st.checkbox("✅ Aplicar a alteração em todos os registros filtrados (ignorar seleção manual)")
+
 
     if not linhas_filtradas_indices:
         st.info("Nenhuma linha corresponde aos filtros aplicados.")
@@ -213,11 +215,14 @@ def handle_field_modification(corpo_sped, assinatura):
         erros_alteracao = []
 
         # Usa os índices do set que está no session state
-        indices_para_alterar = list(st.session_state.get(f'selecionados_{registro_escolhido}', []))
+        if aplicar_em_todos:
+            indices_para_alterar = [idx for idx, _ in linhas_filtradas_indices]
+        else:
+            indices_para_alterar = list(st.session_state.get(f'selecionados_{registro_escolhido}', []))
+            if not indices_para_alterar:
+                st.warning("Nenhum registro está selecionado para aplicar a alteração.")
+                return corpo_sped
 
-        if not indices_para_alterar:
-             st.warning("Nenhum registro está selecionado para aplicar a alteração.")
-             return corpo_sped
 
         for idx_original in indices_para_alterar:
             if idx_original >= len(novo_corpo_sped):
