@@ -152,18 +152,23 @@ def handle_field_modification(corpo_sped, assinatura):
             chave_checkbox = f"chk_{original_idx}"
             is_selected = original_idx in selecionados_indices_set
 
-            # Aplica o estado do select_all da página se ele mudou
+            # Inicializa só no primeiro render daquele item
+            if chave_checkbox not in st.session_state:
+                st.session_state[chave_checkbox] = is_selected
+
+            # >>> ponto crucial: FORCE o estado quando "Selecionar todos" mudar
             if aplicar_select_all_nesta_pagina:
-                is_selected = select_all
+                st.session_state[chave_checkbox] = select_all
 
-            selecionado = st.checkbox(f"{preview_txt}", value=is_selected, key=chave_checkbox)
+            # Agora renderiza SEM 'value=', pois o estado já está em session_state
+            selecionado = st.checkbox(preview_txt, key=chave_checkbox)
 
-            # Atualiza o set global de selecionados
+            # Sincroniza o set global conforme o estado do widget
             if selecionado:
                 selecionados_indices_set.add(original_idx)
-            elif original_idx in selecionados_indices_set:
+            else:
                 selecionados_indices_set.discard(original_idx)
-
+                
         # Reseta o flag de aplicação do select all da página
         st.session_state[f'select_all_pressed_{registro_escolhido}'] = False
 
