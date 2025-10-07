@@ -21,7 +21,7 @@ def ler_e_separar_sped(uploaded_file):
                     is_last_block = False
                     break
             if is_last_block:
-                 # Consideramos o início do bloco 9 como separador
+                 # Considera o início do bloco 9 como separador
                  assinatura_idx = i
                  break # Assume que o primeiro bloco 9 encontrado no final é a assinatura
 
@@ -108,3 +108,4 @@ def load_sped_layout(file_path="sped_descricao/sped_descritivo.txt"):
         st.error(f"Erro ao ler o arquivo descritivo do layout SPED ({file_path}): {e}")
 
         return None 
+
