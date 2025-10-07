@@ -52,7 +52,7 @@ def baixar_arquivo(corpo_sped, assinatura, nome_arquivo="sped_processado.txt"):
         mime="text/plain"
     )
 
-# Poderíamos adicionar mais funções utilitárias aqui no futuro
+# Adicionar mais funções utilitárias aqui no futuro
 # Ex: função para validar formato de linha SPED, etc.
 
 @st.cache_data # Cache para evitar ler o arquivo descritivo toda hora
@@ -106,4 +106,5 @@ def load_sped_layout(file_path="sped_descricao/sped_descritivo.txt"):
         return None
     except Exception as e:
         st.error(f"Erro ao ler o arquivo descritivo do layout SPED ({file_path}): {e}")
+
         return None 
